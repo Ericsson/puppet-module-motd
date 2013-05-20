@@ -1,3 +1,6 @@
+# git is fun #
+===
+
 # puppet-module-motd #
 
 Puppet module to manage /etc/motd and /etc/issue files
