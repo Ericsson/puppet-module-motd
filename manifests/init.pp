@@ -1,11 +1,11 @@
 # == Class: motd
 #
-# This module manages /etc/motd and /etc/issue. 
+# This module manages /etc/motd and /etc/issue.
 # It is meant to be included in the common class that applies to all systems
 #
 # === Parameters
 #
-# motd_file 
+# motd_file
 # ---------------------------
 # Path to motd.
 #
@@ -43,7 +43,7 @@
 #
 # - *Default*:  ''
 #
-# issue_file 
+# issue_file
 # ---------------------------
 # Path to issue.
 #
