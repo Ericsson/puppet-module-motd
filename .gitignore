@@ -12,7 +12,7 @@ spec/reports
 test/tmp
 test/version_tmp
 tmp
-idea/
+.idea/
 Gemfile.lock
 
 # YARD artifacts
