@@ -80,19 +80,62 @@
 #
 # - *Default*:  ''
 #
+# issue_net_file
+# ---------------------------
+# Path to issue.net
+#
+# - *Default*: '/etc/issue.net'
+#
+# issue_net_ensure
+# ---------------------------
+# ensure attribute for file resource. Valid values are 'file', 'present' and 'absent'.
+#
+# - *Default*: file
+#
+# issue_net_owner
+# --------------------------
+# issue.net's owner.
+#
+# - *Default*: 'root'
+#
+#
+# issue_net_group
+# --------------------------
+# issue.net's group.
+#
+# - *Default*: 'root'
+#
+# issue_net_mode
+# -------------------------
+# issue.net's mode.
+#
+# - *Default*: '0644'
+#
+# issue_net_text
+# -------------------------
+# text to be put into issue file
+#
+# - *Default*:  ''
+#
 class motd (
-  $motd_file    = '/etc/motd',
-  $motd_ensure  = 'file',
-  $motd_owner   = 'root',
-  $motd_group   = 'root',
-  $motd_mode    = '0644',
-  $motd_text    = '',
-  $issue_file   = '/etc/issue',
-  $issue_ensure = 'file',
-  $issue_owner  = 'root',
-  $issue_group  = 'root',
-  $issue_mode   = '0644',
-  $issue_text   = '',
+  $motd_file        = '/etc/motd',
+  $motd_ensure      = 'file',
+  $motd_owner       = 'root',
+  $motd_group       = 'root',
+  $motd_mode        = '0644',
+  $motd_text        = '',
+  $issue_file       = '/etc/issue',
+  $issue_ensure     = 'file',
+  $issue_owner      = 'root',
+  $issue_group      = 'root',
+  $issue_mode       = '0644',
+  $issue_text       = '',
+  $issue_net_file   = '/etc/issue.net',
+  $issue_net_ensure = 'file',
+  $issue_net_owner  = 'root',
+  $issue_net_group  = 'root',
+  $issue_net_mode   = '0644',
+  $issue_net_text   = ''
 ) {
 
   # Validates $motd_ensure
@@ -115,6 +158,16 @@ class motd (
     }
   }
 
+  # Validates $issue_net_ensure
+  case $issue_net_ensure {
+    'file', 'present', 'absent': {
+      # noop, these values are valid
+    }
+    default: {
+      fail("Valid values for \$issue_ensure are \'absent\', \'file\', or \'present\'. Specified value is ${issue_net_ensure}")
+    }
+  }
+
   file { 'motd':
     ensure  => $motd_ensure,
     path    => $motd_file,
@@ -132,4 +185,14 @@ class motd (
     mode    => $issue_mode,
     content => template('motd/issue.erb')
   }
+
+  file { 'issue.net':
+    ensure  => $issue_net_ensure,
+    path    => $issue_net_file,
+    owner   => $issue_net_owner,
+    group   => $issue_net_group,
+    mode    => $issue_net_mode,
+    content => template('motd/issue.net.erb')
+  }
+
 }

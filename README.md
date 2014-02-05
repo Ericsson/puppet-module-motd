@@ -78,3 +78,39 @@ text to be put into issue file
 
 - *Default*:  ''
 
+issue_net_file
+--------------
+Path to issue.net.
+
+- *Default*: '/etc/issue.net'
+
+issue_net_ensure
+----------------
+ensure attribute for file resource. Valid values are 'file', 'present' and 'absent'.
+
+- *Default*: file
+
+issue_net_owner
+---------------
+issue.net's owner.
+
+- *Default*: 'root'
+
+issue_net_group
+---------------
+issue.net's group.
+
+- *Default*: 'root'
+
+issue_net_mode
+--------------
+issue.net's mode.
+
+- *Default*: '0644'
+
+issue_net_text
+--------------
+text to be put into issue.net file
+
+- *Default*:  ''
+
