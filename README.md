@@ -2,9 +2,13 @@
 
 Puppet module to manage /etc/motd and /etc/issue files
 
-# Parameters #
+# Compatibility
 
-motd_file 
+This module supports Puppet v3 with Ruby 1.8.7, 1.9.3, and 2.0.0.
+
+# Parameters
+
+motd_file
 ---------
 Path to motd.
 
@@ -36,13 +40,13 @@ motd's mode.
 
 - *Default*: '0644'
 
-motd_text
+motd_content
 ---------
-text to be put into motd file
+content of motd file
 
 - *Default*:  ''
 
-issue_file 
+issue_file
 ----------
 Path to issue.
 
@@ -72,9 +76,9 @@ issue's mode.
 
 - *Default*: '0644'
 
-issue_text
+issue_content
 ----------
-text to be put into issue file
+content of issue file
 
 - *Default*:  ''
 
@@ -108,9 +112,8 @@ issue.net's mode.
 
 - *Default*: '0644'
 
-issue_net_text
+issue_net_content
 --------------
-text to be put into issue.net file
+content of issue.net file
 
 - *Default*:  ''
-
