@@ -23,39 +23,17 @@ class motd (
   $issue_net_content = undef,
 ) {
 
-  # Validates $motd_ensure
-  case $motd_ensure {
-    'file', 'present', 'absent': {
-      # noop, these values are valid
-    }
-    default: {
-      fail("Valid values for \$motd_ensure are \'absent\', \'file\', or \'present\'. Specified value is ${motd_ensure}")
-    }
-  }
-
-  # Validates $issue_ensure
-  case $issue_ensure {
-    'file', 'present', 'absent': {
-      # noop, these values are valid
-    }
-    default: {
-      fail("Valid values for \$issue_ensure are \'absent\', \'file\', or \'present\'. Specified value is ${issue_ensure}")
-    }
-  }
-
-  # Validates $issue_net_ensure
-  case $issue_net_ensure {
-    'file', 'present', 'absent': {
-      # noop, these values are valid
-    }
-    default: {
-      fail("Valid values for \$issue_ensure are \'absent\', \'file\', or \'present\'. Specified value is ${issue_net_ensure}")
-    }
-  }
+  validate_re($motd_ensure,'^(file|present|absent)$','vim::motd_ensure does not match regex. Must be \'file\', \'present\', or \'absent\'.')
+  validate_re($issue_ensure,'^(file|present|absent)$','vim::issue_ensure does not match regex. Must be \'file\', \'present\', or \'absent\'.')
+  validate_re($issue_net_ensure,'^(file|present|absent)$','vim::issue_net_ensure does not match regex. Must be \'file\', \'present\', or \'absent\'.')
 
   validate_absolute_path($motd_file)
   validate_absolute_path($issue_file)
   validate_absolute_path($issue_net_file)
+
+  validate_re($motd_mode,'^\d{4}$','vim::motd_mode does not match regex. Must be a four digit string.')
+  validate_re($issue_mode,'^\d{4}$','vim::issue_mode does not match regex. Must be a four digit string.')
+  validate_re($issue_net_mode,'^\d{4}$','vim::issue_net_mode does not match regex. Must be a four digit string.')
 
   file { 'motd':
     ensure  => $motd_ensure,
@@ -75,7 +53,7 @@ class motd (
     content => $issue_content,
   }
 
-  file { 'issue.net':
+  file { 'issue_net':
     ensure  => $issue_net_ensure,
     path    => $issue_net_file,
     owner   => $issue_net_owner,

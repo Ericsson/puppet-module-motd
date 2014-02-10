@@ -1,6 +1,8 @@
-# puppet-module-motd #
+# puppet-module-motd
 
 Puppet module to manage /etc/motd and /etc/issue files
+
+[![Build Status](https://travis-ci.org/Ericsson/puppet-module-motd.png?branch=master)](https://travis-ci.org/Ericsson/puppet-module-motd)
 
 # Compatibility
 
@@ -44,7 +46,7 @@ motd_content
 ---------
 content of motd file
 
-- *Default*:  ''
+- *Default*: undef
 
 issue_file
 ----------
@@ -80,7 +82,7 @@ issue_content
 ----------
 content of issue file
 
-- *Default*:  ''
+- *Default*: undef
 
 issue_net_file
 --------------
@@ -116,4 +118,4 @@ issue_net_content
 --------------
 content of issue.net file
 
-- *Default*:  ''
+- *Default*:  undef

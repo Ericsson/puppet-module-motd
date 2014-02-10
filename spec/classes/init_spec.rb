@@ -10,66 +10,48 @@ describe 'motd' do
 
     it {
       should contain_file('motd').with({
-        'ensure' => 'file',
-        'path'   => '/etc/motd',
-        'owner'  => 'root',
-        'group'  => 'root',
-        'mode'   => '0644',
+        'ensure'  => 'file',
+        'path'    => '/etc/motd',
+        'owner'   => 'root',
+        'group'   => 'root',
+        'mode'    => '0644',
+        'content' => nil,
       })
     }
 
     it {
       should contain_file('issue').with({
-        'ensure' => 'file',
-        'path'   => '/etc/issue',
-        'owner'  => 'root',
-        'group'  => 'root',
-        'mode'   => '0644',
+        'ensure'  => 'file',
+        'path'    => '/etc/issue',
+        'owner'   => 'root',
+        'group'   => 'root',
+        'mode'    => '0644',
+        'content' => nil,
       })
     }
 
     it {
-      should contain_file('issue.net').with({
-        'ensure' => 'file',
-        'path'   => '/etc/issue.net',
-        'owner'  => 'root',
-        'group'  => 'root',
-        'mode'   => '0644',
+      should contain_file('issue_net').with({
+        'ensure'  => 'file',
+        'path'    => '/etc/issue.net',
+        'owner'   => 'root',
+        'group'   => 'root',
+        'mode'    => '0644',
+        'content' => nil,
       })
     }
   end
 
-  context 'with content related parameters set' do
-  end
-
   describe 'with invalid path' do
-    context 'specified for motd' do
-      let(:params) { { :motd_file => 'invalid/path' } }
+    ['motd','issue','issue_net'].each do |resource|
+      context "specified for #{resource}_file" do
+        let(:params) { { :"#{resource}_file" => 'invalid/path' } }
 
-      it 'should fail' do
-        expect {
-          should contain_class('motd')
-        }.to raise_error(Puppet::Error)
-      end
-    end
-
-    context 'specified for issue' do
-      let(:params) { { :issue_file => 'invalid/path' } }
-
-      it 'should fail' do
-        expect {
-          should contain_class('motd')
-        }.to raise_error(Puppet::Error)
-      end
-    end
-
-    context 'specified for issue.net' do
-      let(:params) { { :issue_net_file => 'invalid/path' } }
-
-      it 'should fail' do
-        expect {
-          should contain_class('motd')
-        }.to raise_error(Puppet::Error)
+        it 'should fail' do
+          expect {
+            should contain_class('motd')
+          }.to raise_error(Puppet::Error)
+        end
       end
     end
   end
@@ -84,7 +66,7 @@ describe 'motd' do
       :path => '/etc/issue',
     },
     'issue_net_ensure' => {
-      :name => 'issue.net',
+      :name => 'issue_net',
       :path => '/etc/issue.net',
     },
   }
@@ -125,19 +107,48 @@ describe 'motd' do
     end
   end
 
-  context 'with invalid value for issue_ensure' do
-  end
+  ['motd','issue','issue_net'].each do |resource|
+    describe "#{resource} specified" do
+      context 'with content specified' do
+        let(:params) { { :"#{resource}_content" => 'foobar' } }
 
-  context 'with invalid value for issue_net_ensure' do
-  end
+        it {
+          should contain_file(resource).with({
+            'ensure' => 'file',
+            'owner'  => 'root',
+            'group'  => 'root',
+            'mode'   => '0644',
+            'content' => /^foobar$/,
+          })
+        }
+      end
 
-  context 'with invalid value for motd_mode' do
-  end
+      ['0775','0664'].each do |mode|
+        context "with mode set to valid value of #{mode}" do
+          let(:params) { { :"#{resource}_mode" => mode } }
 
-  context 'with invalid value for issue_mode' do
-  end
+          it {
+            should contain_file(resource).with({
+              'ensure' => 'file',
+              'owner'  => 'root',
+              'group'  => 'root',
+              'mode'   => mode,
+            })
+          }
+        end
+      end
 
-  context 'with invalid value for issue_net_mode' do
-  end
+      [true,'664','66666','invalid'].each do |mode|
+        context "with mode set to invalid value of #{mode}" do
+          let(:params) { { :"#{resource}_mode" => mode } }
 
+          it 'should fail' do
+            expect {
+              should contain_class('motd')
+            }.to raise_error(Puppet::Error,/vim::#{resource}_mode does not match regex. Must be a four digit string./)
+          end
+        end
+      end
+    end
+  end
 end
