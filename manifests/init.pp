@@ -1,119 +1,39 @@
 # == Class: motd
 #
 # This module manages /etc/motd and /etc/issue.
-# It is meant to be included in the common class that applies to all systems
-#
-# === Parameters
-#
-# motd_file
-# ---------------------------
-# Path to motd.
-#
-# - *Default*: '/etc/motd'
-#
-# motd_ensure
-# ---------------------------
-# ensure attribute for file resource. Valid values are 'file', 'present' and 'absent'.
-#
-# - *Default*: file
-#
-# motd_owner
-# --------------------------
-# motd's owner.
-#
-# - *Default*: 'root'
-#
-#
-# motd_group
-# --------------------------
-# motd's group.
-#
-# - *Default*: 'root'
-#
-#
-# motd_mode
-# -------------------------
-# motd's mode.
-#
-# - *Default*: '0644'
-#
-# motd_text
-# -------------------------
-# text to be put into motd file
-#
-# - *Default*:  ''
-#
-# issue_file
-# ---------------------------
-# Path to issue.
-#
-# - *Default*: '/etc/issue'
-#
-# issue_ensure
-# ---------------------------
-# ensure attribute for file resource. Valid values are 'file', 'present' and 'absent'.
-#
-# - *Default*: file
-#
-# issue_owner
-# --------------------------
-# issue's owner.
-#
-# - *Default*: 'root'
-#
-#
-# issue_group
-# --------------------------
-# issue's group.
-#
-# - *Default*: 'root'
-#
-# issue_mode
-# -------------------------
-# issue's mode.
-#
-# - *Default*: '0644'
-#
-# issue_text
-# -------------------------
-# text to be put into issue file
-#
-# - *Default*:  ''
 #
 class motd (
-  $motd_file    = '/etc/motd',
-  $motd_ensure  = 'file',
-  $motd_owner   = 'root',
-  $motd_group   = 'root',
-  $motd_mode    = '0644',
-  $motd_text    = '',
-  $issue_file   = '/etc/issue',
-  $issue_ensure = 'file',
-  $issue_owner  = 'root',
-  $issue_group  = 'root',
-  $issue_mode   = '0644',
-  $issue_text   = '',
+  $motd_file         = '/etc/motd',
+  $motd_ensure       = 'file',
+  $motd_owner        = 'root',
+  $motd_group        = 'root',
+  $motd_mode         = '0644',
+  $motd_content      = undef,
+  $issue_file        = '/etc/issue',
+  $issue_ensure      = 'file',
+  $issue_owner       = 'root',
+  $issue_group       = 'root',
+  $issue_mode        = '0644',
+  $issue_content     = undef,
+  $issue_net_file    = '/etc/issue.net',
+  $issue_net_ensure  = 'file',
+  $issue_net_owner   = 'root',
+  $issue_net_group   = 'root',
+  $issue_net_mode    = '0644',
+  $issue_net_content = undef,
 ) {
 
-  # Validates $motd_ensure
-  case $motd_ensure {
-    'file', 'present', 'absent': {
-      # noop, these values are valid
-    }
-    default: {
-      fail("Valid values for \$motd_ensure are \'absent\', \'file\', or \'present\'. Specified value is ${motd_ensure}")
-    }
-  }
+  validate_re($motd_ensure,'^(file|present|absent)$','vim::motd_ensure does not match regex. Must be \'file\', \'present\', or \'absent\'.')
+  validate_re($issue_ensure,'^(file|present|absent)$','vim::issue_ensure does not match regex. Must be \'file\', \'present\', or \'absent\'.')
+  validate_re($issue_net_ensure,'^(file|present|absent)$','vim::issue_net_ensure does not match regex. Must be \'file\', \'present\', or \'absent\'.')
 
-  # Validates $issue_ensure
-  case $issue_ensure {
-    'file', 'present', 'absent': {
-      # noop, these values are valid
-    }
-    default: {
-      fail("Valid values for \$issue_ensure are \'absent\', \'file\', or \'present\'. Specified value is ${issue_ensure}")
-    }
-  }
+  validate_absolute_path($motd_file)
+  validate_absolute_path($issue_file)
+  validate_absolute_path($issue_net_file)
+
+  validate_re($motd_mode,'^\d{4}$','vim::motd_mode does not match regex. Must be a four digit string.')
+  validate_re($issue_mode,'^\d{4}$','vim::issue_mode does not match regex. Must be a four digit string.')
+  validate_re($issue_net_mode,'^\d{4}$','vim::issue_net_mode does not match regex. Must be a four digit string.')
 
   file { 'motd':
     ensure  => $motd_ensure,
@@ -121,7 +41,7 @@ class motd (
     owner   => $motd_owner,
     group   => $motd_group,
     mode    => $motd_mode,
-    content => template('motd/motd.erb')
+    content => $motd_content,
   }
 
   file { 'issue':
@@ -130,6 +50,15 @@ class motd (
     owner   => $issue_owner,
     group   => $issue_group,
     mode    => $issue_mode,
-    content => template('motd/issue.erb')
+    content => $issue_content,
+  }
+
+  file { 'issue_net':
+    ensure  => $issue_net_ensure,
+    path    => $issue_net_file,
+    owner   => $issue_net_owner,
+    group   => $issue_net_group,
+    mode    => $issue_net_mode,
+    content => $issue_net_content,
   }
 }
