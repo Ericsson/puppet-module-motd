@@ -1,5 +1,5 @@
 name    'ericsson-motd'
-version '0.0.1'
+version '1.0.0'
 source 'git@github.com:ericsson/puppet-module-motd.git'
 author 'ericsson'
 license 'Apache License, Version 2.0'
