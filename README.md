@@ -6,7 +6,25 @@ Puppet module to manage /etc/motd and /etc/issue files
 
 # Compatibility
 
-This module supports Puppet v3 with Ruby 1.8.7, 1.9.3, and 2.0.0.
+This module is built for use with Puppet v3 (with and without the future
+parser) and Puppet v4 on the following platforms and supports Ruby versions
+1.8.7, 1.9.3, 2.0.0 and 2.1.0.
+
+* Debian 5
+* Debian 6
+* Debian 7
+* EL 5
+* EL 6
+* EL 7
+* Solaris 9
+* Solaris 10
+* Solaris 11
+* Suse 10 (SLED/SLES)
+* Suse 11 (SLED/SLES)
+* Suse 12 (SLED/SLES)
+* Ubuntu 12.04 LTS
+* Ubuntu 14.04 LTS
+
 
 # Parameters
 
