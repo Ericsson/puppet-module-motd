@@ -23,9 +23,9 @@ class motd (
   $issue_net_content = undef,
 ) {
 
-  validate_re($motd_ensure,'^(file|present|absent)$','vim::motd_ensure does not match regex. Must be \'file\', \'present\', or \'absent\'.')
-  validate_re($issue_ensure,'^(file|present|absent)$','vim::issue_ensure does not match regex. Must be \'file\', \'present\', or \'absent\'.')
-  validate_re($issue_net_ensure,'^(file|present|absent)$','vim::issue_net_ensure does not match regex. Must be \'file\', \'present\', or \'absent\'.')
+  validate_re($motd_ensure,'^(file|present|absent)$','vim::motd_ensure must be <file>, <present> or <absent>.')
+  validate_re($issue_ensure,'^(file|present|absent)$','vim::issue_ensure must be <file>, <present> or <absent>.')
+  validate_re($issue_net_ensure,'^(file|present|absent)$','vim::issue_net_ensure must be <file>, <present> or <absent>.')
 
   validate_absolute_path($motd_file)
   validate_absolute_path($issue_file)
