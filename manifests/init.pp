@@ -31,9 +31,9 @@ class motd (
   validate_absolute_path($issue_file)
   validate_absolute_path($issue_net_file)
 
-  validate_re($motd_mode,'^\d{4}$','vim::motd_mode does not match regex. Must be a four digit string.')
-  validate_re($issue_mode,'^\d{4}$','vim::issue_mode does not match regex. Must be a four digit string.')
-  validate_re($issue_net_mode,'^\d{4}$','vim::issue_net_mode does not match regex. Must be a four digit string.')
+  validate_re($motd_mode,'^[0-7]{4}$','vim::motd_mode must be a valid four digit mode in octal notation.')
+  validate_re($issue_mode,'^[0-7]{4}$','vim::issue_mode must be a valid four digit mode in octal notation.')
+  validate_re($issue_net_mode,'^[0-7]{4}$','vim::issue_net_mode must be a valid four digit mode in octal notation.')
 
   file { 'motd':
     ensure  => $motd_ensure,
