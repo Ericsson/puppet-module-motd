@@ -23,17 +23,17 @@ class motd (
   $issue_net_content = undef,
 ) {
 
-  validate_re($motd_ensure,'^(file|present|absent)$','vim::motd_ensure does not match regex. Must be \'file\', \'present\', or \'absent\'.')
-  validate_re($issue_ensure,'^(file|present|absent)$','vim::issue_ensure does not match regex. Must be \'file\', \'present\', or \'absent\'.')
-  validate_re($issue_net_ensure,'^(file|present|absent)$','vim::issue_net_ensure does not match regex. Must be \'file\', \'present\', or \'absent\'.')
+  validate_re($motd_ensure,'^(file|present|absent)$','vim::motd_ensure must be <file>, <present> or <absent>.')
+  validate_re($issue_ensure,'^(file|present|absent)$','vim::issue_ensure must be <file>, <present> or <absent>.')
+  validate_re($issue_net_ensure,'^(file|present|absent)$','vim::issue_net_ensure must be <file>, <present> or <absent>.')
 
   validate_absolute_path($motd_file)
   validate_absolute_path($issue_file)
   validate_absolute_path($issue_net_file)
 
-  validate_re($motd_mode,'^\d{4}$','vim::motd_mode does not match regex. Must be a four digit string.')
-  validate_re($issue_mode,'^\d{4}$','vim::issue_mode does not match regex. Must be a four digit string.')
-  validate_re($issue_net_mode,'^\d{4}$','vim::issue_net_mode does not match regex. Must be a four digit string.')
+  validate_re($motd_mode,'^[0-7]{4}$','vim::motd_mode must be a valid four digit mode in octal notation.')
+  validate_re($issue_mode,'^[0-7]{4}$','vim::issue_mode must be a valid four digit mode in octal notation.')
+  validate_re($issue_net_mode,'^[0-7]{4}$','vim::issue_net_mode must be a valid four digit mode in octal notation.')
 
   file { 'motd':
     ensure  => $motd_ensure,
