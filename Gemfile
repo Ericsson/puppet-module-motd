@@ -1,7 +1,7 @@
 source ENV['GEM_SOURCE'] || 'https://rubygems.org'
 
-if ENV['PUPPET_GEM_VERSION']
-  gem 'puppet', ENV['PUPPET_GEM_VERSION'], :require => false
+if puppetversion = ENV['PUPPET_GEM_VERSION']
+  gem 'puppet', puppetversion, :require => false
 else
   gem 'puppet', :require => false
 end
