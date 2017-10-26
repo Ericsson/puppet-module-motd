@@ -135,19 +135,19 @@ describe 'motd' do
         :name    => %w(motd_file issue_file issue_net_file),
         :valid   => %w(/absolute/filepath /absolute/directory/),
         :invalid => ['string', %w(array), { 'ha' => 'sh' }, 3, 2.42, true, false, nil],
-        :message => 'is not an absolute path',
+        :message => '(expects a match for Variant\[Stdlib::Windowspath|expects a Stdlib::Absolutepath = Variant)', # Puppet 4|5
       },
       'regex ensure' => {
         :name    => %w(motd_ensure issue_ensure issue_net_ensure),
         :valid   => %w(file present absent),
         :invalid => ['string', %w(array), { 'ha' => 'sh' }, 3, 2.42, true, false, nil],
-        :message => 'must be <file>, <present> or <absent>',
+        :message => 'match for Enum\[\'absent\', \'file\', \'present\'\]',
       },
       'regex file mode' => {
         :name    => %w(motd_mode issue_mode issue_net_mode),
         :valid   => %w(0755 0644 1755 0242),
         :invalid => ['string', '755', 980, '0980', %w(array), { 'ha' => 'sh' }, 3, 2.42, true, false, nil],
-        :message => 'must be a valid four digit mode in octal notation',
+        :message => 'expects a match for Pattern\[\/\^\[0-7\]\{4\}\$\/\]',
       },
     }
 
