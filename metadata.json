@@ -1,6 +1,6 @@
 {
   "name": "ericsson-motd",
-  "version": "1.0.3",
+  "version": "1.0.4",
   "author": "ericsson",
   "summary": "Manage MOTD",
   "license": "Apache-2.0",
