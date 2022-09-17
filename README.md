@@ -16,6 +16,7 @@ Puppet v4 and v5 using the ruby versions that are shipped with each. See
 * EL 5
 * EL 6
 * EL 7
+* EL 8
 * Solaris 9
 * Solaris 10
 * Solaris 11
