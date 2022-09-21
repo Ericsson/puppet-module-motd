@@ -1,53 +1,59 @@
 require 'spec_helper'
 describe 'motd' do
-  it { should compile.with_all_deps }
+  it { is_expected.to compile.with_all_deps }
 
   context 'with defaults for all parameters' do
-    it { should compile.with_all_deps }
+    it { is_expected.to compile.with_all_deps }
 
-    it { should contain_class('motd') }
+    it { is_expected.to contain_class('motd') }
 
     it do
-      should contain_file('motd').with({
-        'ensure'  => 'file',
-        'path'    => '/etc/motd',
-        'owner'   => 'root',
-        'group'   => 'root',
-        'mode'    => '0644',
-        'content' => nil,
-      })
+      is_expected.to contain_file('motd').with(
+        {
+          'ensure'  => 'file',
+          'path'    => '/etc/motd',
+          'owner'   => 'root',
+          'group'   => 'root',
+          'mode'    => '0644',
+          'content' => nil,
+        },
+      )
     end
 
     it do
-      should contain_file('issue').with({
-        'ensure'  => 'file',
-        'path'    => '/etc/issue',
-        'owner'   => 'root',
-        'group'   => 'root',
-        'mode'    => '0644',
-        'content' => nil,
-      })
+      is_expected.to contain_file('issue').with(
+        {
+          'ensure'  => 'file',
+          'path'    => '/etc/issue',
+          'owner'   => 'root',
+          'group'   => 'root',
+          'mode'    => '0644',
+          'content' => nil,
+        },
+      )
     end
 
     it do
-      should contain_file('issue_net').with({
-        'ensure'  => 'file',
-        'path'    => '/etc/issue.net',
-        'owner'   => 'root',
-        'group'   => 'root',
-        'mode'    => '0644',
-        'content' => nil,
-      })
+      is_expected.to contain_file('issue_net').with(
+        {
+          'ensure'  => 'file',
+          'path'    => '/etc/issue.net',
+          'owner'   => 'root',
+          'group'   => 'root',
+          'mode'    => '0644',
+          'content' => nil,
+        },
+      )
     end
   end
 
   describe 'with invalid path' do
-    %w(motd issue issue_net).each do |resource|
+    ['motd', 'issue', 'issue_net'].each do |resource|
       context "specified for #{resource}_file" do
-        let(:params) { { :"#{resource}_file" => 'invalid/path' } }
+        let(:params) { { "#{resource}_file": 'invalid/path' } }
 
-        it 'should fail' do
-          expect { should contain_class(subject) }.to raise_error(Puppet::Error)
+        it 'fail' do
+          expect { is_expected.to contain_class(:subject) }.to raise_error(Puppet::Error)
         end
       end
     end
@@ -55,70 +61,76 @@ describe 'motd' do
 
   ensure_hash = {
     'motd_ensure' => {
-      :name => 'motd',
-      :path => '/etc/motd',
+      name: 'motd',
+      path: '/etc/motd',
     },
     'issue_ensure' => {
-      :name => 'issue',
-      :path => '/etc/issue',
+      name: 'issue',
+      path: '/etc/issue',
     },
     'issue_net_ensure' => {
-      :name => 'issue_net',
-      :path => '/etc/issue.net',
+      name: 'issue_net',
+      path: '/etc/issue.net',
     },
   }
 
   ensure_hash.sort.each do |k, v|
     describe "with parameter #{k}" do
-      %w(file present absent).each do |value|
+      ['file', 'present', 'absent'].each do |value|
         context "set to the valid value of #{value}" do
-          let(:params) { { :"#{k}" => value } }
+          let(:params) { { "#{k}": value } }
 
-          it { should compile.with_all_deps }
+          it { is_expected.to compile.with_all_deps }
 
-          it { should contain_class('motd') }
+          it { is_expected.to contain_class('motd') }
 
           it do
-            should contain_file(v[:name]).with({
-              'ensure' => value,
-              'path'   => v[:path],
-              'owner'  => 'root',
-              'group'  => 'root',
-              'mode'   => '0644',
-            })
+            is_expected.to contain_file(v[:name]).with(
+              {
+                'ensure' => value,
+                'path'   => v[:path],
+                'owner'  => 'root',
+                'group'  => 'root',
+                'mode'   => '0644',
+              },
+            )
           end
         end
       end
     end
   end
 
-  %w(motd issue issue_net).each do |resource|
+  ['motd', 'issue', 'issue_net'].each do |resource|
     describe "#{resource} specified" do
       context 'with content specified' do
-        let(:params) { { :"#{resource}_content" => 'foobar' } }
+        let(:params) { { "#{resource}_content": 'foobar' } }
 
         it do
-          should contain_file(resource).with({
-            'ensure' => 'file',
-            'owner'  => 'root',
-            'group'  => 'root',
-            'mode'   => '0644',
-            'content' => /^foobar$/,
-          })
-        end
-      end
-
-      %w(0775 0664).each do |mode|
-        context "with mode set to valid value of #{mode}" do
-          let(:params) { { :"#{resource}_mode" => mode } }
-
-          it do
-            should contain_file(resource).with({
+          is_expected.to contain_file(resource).with(
+            {
               'ensure' => 'file',
               'owner'  => 'root',
               'group'  => 'root',
-              'mode'   => mode,
-            })
+              'mode'   => '0644',
+              'content' => %r{^foobar$},
+            },
+          )
+        end
+      end
+
+      ['0775', '0664'].each do |mode|
+        context "with mode set to valid value of #{mode}" do
+          let(:params) { { "#{resource}_mode": mode } }
+
+          it do
+            is_expected.to contain_file(resource).with(
+              {
+                'ensure' => 'file',
+                'owner'  => 'root',
+                'group'  => 'root',
+                'mode'   => mode,
+              },
+            )
           end
         end
       end
@@ -132,22 +144,22 @@ describe 'motd' do
 
     validations = {
       'absolute_path' => {
-        :name    => %w(motd_file issue_file issue_net_file),
-        :valid   => %w(/absolute/filepath /absolute/directory/),
-        :invalid => ['string', %w(array), { 'ha' => 'sh' }, 3, 2.42, true, false, nil],
-        :message => '(expects a match for Variant\[Stdlib::Windowspath|expects a Stdlib::Absolutepath = Variant)', # Puppet 4|5
+        name:     ['motd_file', 'issue_file', 'issue_net_file'],
+        valid:    ['/absolute/filepath', '/absolute/directory/'],
+        invalid:  ['string', ['array'], { 'ha' => 'sh' }, 3, 2.42, true, false, nil],
+        message:  '(expects a match for Variant\[Stdlib::Windowspath|expects a Stdlib::Absolutepath = Variant)', # Puppet 4|5
       },
       'regex ensure' => {
-        :name    => %w(motd_ensure issue_ensure issue_net_ensure),
-        :valid   => %w(file present absent),
-        :invalid => ['string', %w(array), { 'ha' => 'sh' }, 3, 2.42, true, false, nil],
-        :message => 'match for Enum\[\'absent\', \'file\', \'present\'\]',
+        name:     ['motd_ensure', 'issue_ensure', 'issue_net_ensure'],
+        valid:    ['file', 'present', 'absent'],
+        invalid:  ['string', ['array'], { 'ha' => 'sh' }, 3, 2.42, true, false, nil],
+        message:  'match for Enum\[\'absent\', \'file\', \'present\'\]',
       },
       'regex file mode' => {
-        :name    => %w(motd_mode issue_mode issue_net_mode),
-        :valid   => %w(0755 0644 1755 0242),
-        :invalid => ['string', '755', 980, '0980', %w(array), { 'ha' => 'sh' }, 3, 2.42, true, false, nil],
-        :message => 'expects a match for Pattern\[\/\^\[0-7\]\{4\}\$\/\]',
+        name:     ['motd_mode', 'issue_mode', 'issue_net_mode'],
+        valid:    ['0755', '0644', '1755', '0242'],
+        invalid:  ['string', '755', 980, '0980', ['array'], { 'ha' => 'sh' }, 3, 2.42, true, false, nil],
+        message:  'expects a match for Pattern\[\/\^\[0-7\]\{4\}\$\/\]',
       },
     }
 
@@ -156,16 +168,18 @@ describe 'motd' do
         var[:params] = {} if var[:params].nil?
         var[:valid].each do |valid|
           context "when #{var_name} (#{type}) is set to valid #{valid} (as #{valid.class})" do
-            let(:params) { [mandatory_params, var[:params], { :"#{var_name}" => valid, }].reduce(:merge) }
-            it { should compile }
+            let(:params) { [ var[:params], { "#{var_name}": valid, }].reduce(:merge) }
+
+            it { is_expected.to compile }
           end
         end
 
         var[:invalid].each do |invalid|
           context "when #{var_name} (#{type}) is set to invalid #{invalid} (as #{invalid.class})" do
-            let(:params) { [mandatory_params, var[:params], { :"#{var_name}" => invalid, }].reduce(:merge) }
-            it 'should fail' do
-              expect { should contain_class(subject) }.to raise_error(Puppet::Error, /#{var[:message]}/)
+            let(:params) { [ var[:params], { "#{var_name}": invalid, }].reduce(:merge) }
+
+            it 'fail' do
+              expect { is_expected.to contain_class(:subject) }.to raise_error(Puppet::Error, %r{#{var[:message]}})
             end
           end
         end
