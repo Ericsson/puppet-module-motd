@@ -74,7 +74,6 @@ class motd (
   Pattern[/^[0-7]{4}$/] $issue_net_mode               = '0644',
   Optional[String] $issue_net_content                 = undef,
 ) {
-
   file { 'motd':
     ensure  => $motd_ensure,
     path    => $motd_file,
