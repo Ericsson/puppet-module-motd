@@ -7,7 +7,12 @@
   "source": "git://github.com/Ericsson/puppet-module-motd.git",
   "project_page": "http://github.com/Ericsson/puppet-module-motd",
   "issues_url": "https://github.com/Ericsson/puppet-module-motd/issues",
-  "description": "Manage /etc/motd, /etc/issue, and /etc/issue.net files",
+  "dependencies": [
+    {
+      "name": "puppetlabs/stdlib",
+      "version_requirement": ">= 4.13.1 < 9.0.0"
+    }
+  ],
   "operatingsystem_support": [
     {
       "operatingsystem": "Debian",
@@ -88,7 +93,8 @@
       "version_requirement": ">= 4.7.0 < 8.0.0"
     }
   ],
-  "dependencies": [
-    {"name":"puppetlabs/stdlib","version_requirement":">= 4.13.1 < 9.0.0"}
-  ]
+  "description": "Manage /etc/motd, /etc/issue, and /etc/issue.net files",
+  "pdk-version": "2.5.0",
+  "template-url": "pdk-default#2.5.0",
+  "template-ref": "tags/2.5.0-0-g369d483"
 }
