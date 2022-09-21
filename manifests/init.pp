@@ -1,6 +1,58 @@
-# == Class: motd
+# Puppet module to manage /etc/motd and /etc/issue files
 #
-# This module manages /etc/motd and /etc/issue.
+# @param motd_file
+#   Path to motd.
+#
+# @param motd_ensure
+#   Ensure attribute for file resource. Valid values are 'file', 'present' and 'absent'.
+#
+# @param motd_owner
+#   motd owner.
+#
+# @param motd_group
+#   motd group.
+#
+# @param motd_mode
+#   motd mode.
+#
+# @param motd_content
+#   Content of motd file.
+#
+# @param issue_file
+#   Path to issue.
+#
+# @param issue_ensure
+#   Ensure attribute for file resource. Valid values are 'file', 'present' and 'absent'.
+#
+# @param issue_owner
+#   issue owner.
+#
+# @param issue_group
+#   issue group.
+#
+# @param issue_mode
+#   issue mode.
+#
+# @param issue_content
+#   Content of issue file.
+#
+# @param issue_net_file
+#   Path to issue.net.
+#
+# @param issue_net_ensure
+#   Ensure attribute for file resource. Valid values are 'file', 'present' and 'absent'.
+#
+# @param issue_net_owner
+#   issue.net owner.
+#
+# @param issue_net_group
+#   issue.net group.
+#
+# @param issue_net_mode
+#   issue.net mode.
+#
+# @param issue_net_content
+#   Content of issue.net file
 #
 class motd (
   Stdlib::Absolutepath $motd_file                     = '/etc/motd',
