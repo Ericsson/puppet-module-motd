@@ -159,7 +159,7 @@ describe 'motd' do
         name:     ['motd_mode', 'issue_mode', 'issue_net_mode'],
         valid:    ['0755', '0644', '1755', '0242'],
         invalid:  ['string', '755', 980, '0980', ['array'], { 'ha' => 'sh' }, 3, 2.42, true, false, nil],
-        message:  'expects a match for Pattern\[\/\^\[0-7\]\{4\}\$\/\]',
+        message:  'xpects a match for Stdlib::Filemode',
       },
     }
 
