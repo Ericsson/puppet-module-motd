@@ -18,6 +18,24 @@
 # @param motd_content
 #   Content of motd file.
 #
+# @param motd_directory_ensure
+#   Ensure attribute for directory resource. Valid values are 'directory' and 'absent'
+#
+# @param motd_directory
+#   Path to MOTD directory
+#
+# @param motd_directory_owner
+#   motd directory owner
+#
+# @param motd_directory_group
+#   motd directory group
+#
+# @param motd_directory_mode
+#   motd directory mode
+#
+# @param motd_directory_purge
+#   Sets whether to purge unmanaged files under motd module_directory
+#
 # @param issue_file
 #   Path to issue.
 #
@@ -61,6 +79,12 @@ class motd (
   String[1]                         $motd_group        = 'root',
   Stdlib::Filemode                  $motd_mode         =  '0644',
   Optional[String[1]]               $motd_content      = undef,
+  Enum['directory', 'absent']       $motd_directory_ensure  = 'directory',
+  Stdlib::Absolutepath              $motd_directory         = '/etc/motd.d',
+  String[1]                         $motd_directory_owner   = 'root',
+  String[1]                         $motd_directory_group   = 'root',
+  Stdlib::Filemode                  $motd_directory_mode    =  '0755',
+  Boolean                           $motd_directory_purge   = true,
   Stdlib::Absolutepath              $issue_file        = '/etc/issue',
   Enum['file', 'present', 'absent'] $issue_ensure      = 'file',
   String                            $issue_owner       = 'root',
@@ -81,6 +105,17 @@ class motd (
     group   => $motd_group,
     mode    => $motd_mode,
     content => $motd_content,
+  }
+
+  file { 'motd.d':
+    ensure  => $motd_directory_ensure,
+    path    => $motd_directory,
+    owner   => $motd_directory_owner,
+    group   => $motd_directory_group,
+    mode    => $motd_directory_mode,
+    purge   => $motd_directory_purge,
+    force   => $motd_directory_purge,
+    recurse => $motd_directory_purge,
   }
 
   file { 'issue':

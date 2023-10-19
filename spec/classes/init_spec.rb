@@ -21,6 +21,21 @@ describe 'motd' do
     end
 
     it do
+      is_expected.to contain_file('motd.d').with(
+        {
+          'ensure'  => 'directory',
+          'path'    => '/etc/motd.d',
+          'owner'   => 'root',
+          'group'   => 'root',
+          'mode'    => '0755',
+          'purge'   => true,
+          'force'   => true,
+          'recurse' => true,
+        },
+      )
+    end
+
+    it do
       is_expected.to contain_file('issue').with(
         {
           'ensure'  => 'file',
