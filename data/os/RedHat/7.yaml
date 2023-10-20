@@ -1,0 +1,2 @@
+---
+motd::motd_directory_ensure: absent
